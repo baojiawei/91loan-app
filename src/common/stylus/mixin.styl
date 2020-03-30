@@ -1,0 +1,90 @@
+border-top-1px($color = #dcdcdc, $style = solid)
+  position: relative
+  &::after
+    content: ""
+    pointer-events: none
+    display: block
+    position: absolute
+    left: 0
+    top: 0
+    transform-origin: 0 0
+    border-top: 1PX $style $color
+    width 100%
+    height 100%
+    @media (min-resolution: 2dppx)
+      width: 200%
+      height: 200%
+      transform: scale(.5)
+    @media (min-resolution: 3dppx)
+      width: 300%
+      height: 300%
+      transform: scale(.333)
+
+border-bottom-1px($color = #dcdcdc, $style = solid)
+  position: relative
+  &::after
+    content: ""
+    pointer-events: none
+    display: block
+    position: absolute
+    left: 0
+    top: 0
+    transform-origin: 0 0
+    border-bottom: 1PX $style $color
+    width 100%
+    height 100%
+    @media (min-resolution: 2dppx)
+      width: 200%
+      height: 200%
+      transform: scale(.5)
+    @media (min-resolution: 3dppx)
+      width: 300%
+      height: 300%
+      transform: scale(.333)
+
+border-1px($color = #dcdcdc, $style = solid, $direction = bottom)
+  position: relative
+  &::after
+    content: ""
+    pointer-events: none
+    display: block
+    position: absolute
+    left: 0
+    top: 0
+    transform-origin: 0 0
+    if $direction == all
+      border: 1PX $style $color
+    else
+      border-{$direction}: 1PX $style $color
+    width 100%
+    height 100%
+    @media (min-resolution: 2dppx),(-webkit-min-device-pixel-ratio: 2)
+      width: 200%
+      height: 200%
+      transform: scale(.5)
+    @media (min-resolution: 3dppx),(-webkit-min-device-pixel-ratio: 3)
+      width: 300%
+      height: 300%
+      transform: scale(.333)
+
+border-none()
+  &::before
+    display: none
+  &::after
+    display: none
+
+// 扩展点击区域
+extend-click()
+  position: relative
+  &:before
+    content: ''
+    position: absolute
+    top: -10px
+    left: -10px
+    right: -10px
+    bottom: -10px
+
+inline-block-direction($direction = middle)
+  display: inline-block
+  vertical-align: $direction
+
