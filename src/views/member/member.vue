@@ -1,14 +1,17 @@
 <template>
   <div class="member">
     <cube-scroll>
-      <div class="header">
+      <div class="header-open" v-if="custInfo.vip">
         <div class="user-info">
           <div class="user-info-left"></div>
           <div class="user-info-right">
-            <div class="tel">13567174440</div>
-            <div class="due-time">会员于2020-03-20到期</div>
+            <div class="tel">{{ custInfo.telNo }}</div>
+            <div class="due-time">会员于{{ custInfo.vipExpTime | formatTime}}到期</div>
           </div>
         </div>
+      </div>
+      <div class="header-no-open" v-else>
+        <router-link tag="div" :to="{ name: 'memberPay' }" append class="header-right-button">立即开通</router-link>
       </div>
       <div class="new-flash-warpper">
         <i class="icon-new-flash"></i>
@@ -96,9 +99,9 @@
           </li>
         </ul>
       </div>
-      <div style="height:100px;"></div>
+      <div v-if="!custInfo.vip" style="height:100px;"></div>
     </cube-scroll>
-    <div class="bottom-btn">
+    <div class="bottom-btn" v-if="!custInfo.vip">
       <div class="before"></div>
       <div class="btn-left">
         <div>
@@ -113,26 +116,58 @@
           </div>
         </div>
       </div>
-      <div class="btn-right">立即开通</div>
+      <router-link tag="div" :to="{ name: 'memberPay' }" append class="btn-right">立即开通</router-link>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import { getLoanCustList } from 'api/loanProduct'
+import { getUserInfoApp, showAppTabBar } from 'common/js/utils-app'
+import { dateToStr } from 'common/js/utils'
+import { getTradeGoodsList } from 'api/report'
 export default {
   data () {
     return {
-      loanCustList: []
+      loanCustList: [],
+      custInfo: '',
+      tradeGoods: [],
+      goodsId: 4
     }
+  },
+  filters: {
+    formatMoney (item) {
+      return item / 100
+    },
+    formatTime (item) {
+      return dateToStr(item, 'yyyy/MM/dd')
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    showAppTabBar(true)
+    next()
   },
   created () {
     this._getLoanCustList()
+    this._getTradeGoods()
+  },
+  mounted () {
+    if (getUserInfoApp()) {
+      this.custInfo = getUserInfoApp()
+    } else {
+      this.custInfo = {}
+    }
   },
   methods: {
     _getLoanCustList () {
       getLoanCustList().then(res => {
         this.loanCustList = res.data
+      })
+    },
+    _getTradeGoods () {
+      getTradeGoodsList().then(res => {
+        this.tradeGoods = res.data
       })
     }
   }
@@ -149,8 +184,9 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 1;
 
-  .header {
+  .header-open {
     width: 750px;
     height: 338px;
     background: url('~images/member/bg-banner-open.png') no-repeat;
@@ -208,6 +244,32 @@ export default {
           color: rgba(133, 116, 105, 1);
         }
       }
+    }
+  }
+
+  .header-no-open {
+    width: 750px;
+    height: 338px;
+    background: url('~images/member/bg-banner-no-open.png') no-repeat;
+    background-size: cover;
+    padding-top: 142px;
+    box-sizing: border-box;
+    position: relative;
+
+    .header-right-button {
+      width: 200px;
+      height: 72px;
+      line-height: 72px;
+      text-align: center;
+      background: rgba(23, 25, 29, 1);
+      border-radius: 36px;
+      font-size: 28px;
+      font-family: PingFangSC-Semibold, PingFang SC;
+      font-weight: 600;
+      color: rgba(226, 185, 162, 1);
+      position: absolute;
+      bottom: 52px;
+      right: 66px;
     }
   }
 

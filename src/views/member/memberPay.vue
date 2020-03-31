@@ -1,13 +1,12 @@
 <template>
-  <div class="member">
+  <div class="member-pay">
     <cube-scroll>
       <div class="header">
-        <div class="user-info">
-          <div class="user-info-left"></div>
-          <div class="user-info-right">
-            <div class="tel">13567174440</div>
-            <div class="due-time">会员于2020-03-20到期</div>
-          </div>
+        <div class="header-top" />
+        <div class="header-bottom">
+          <span>开通黑钻会员 畅享</span>
+          <span class="red">8</span>
+          <span>大权益</span>
         </div>
       </div>
       <div class="new-flash-warpper">
@@ -21,94 +20,59 @@
         </div>
       </div>
       <div class="middle-content-wrapper">
-        <div class="title title1"></div>
-        <ul class="financial-service-list">
+        <div class="title"></div>
+        <ul class="equity-list">
           <li>
-            <div class="left-part">
-              <img src="./images/icon1.png" alt />
-            </div>
-            <div class="right-part">
-              <div class="name">会员产品</div>
-              <div class="desc">50+专属产品可申请</div>
-            </div>
+            <img src="~images/memberPay/icon1.png" alt />
+            <div class="name">专属产品</div>
           </li>
           <li>
-            <div class="left-part">
-              <img src="./images/icon2.png" alt />
-            </div>
-            <div class="right-part">
-              <div class="name">审核加速</div>
-              <div class="desc">专属渠道下款更快</div>
-            </div>
+            <img src="~images/memberPay/icon2.png" alt />
+            <div class="name">加速审核</div>
           </li>
           <li>
-            <div class="left-part">
-              <img src="./images/icon3.png" alt />
-            </div>
-            <div class="right-part">
-              <div class="name">信用卡代偿</div>
-              <div class="desc">信用卡还款优先</div>
-            </div>
+            <img src="~images/memberPay/icon3.png" alt />
+            <div class="name">信用卡代偿</div>
           </li>
           <li>
-            <div class="left-part">
-              <img src="./images/icon4.png" alt />
-            </div>
-            <div class="right-part">
-              <div class="name">信用卡免费申请</div>
-              <div class="desc">超高额度在线申请</div>
-            </div>
+            <img src="~images/memberPay/icon4.png" alt />
+            <div class="name">信用分析</div>
           </li>
           <li>
-            <div class="left-part">
-              <img src="./images/icon5.png" alt />
-            </div>
-            <div class="right-part">
-              <div class="name">信用分析</div>
-              <div class="desc">多头黑名单查询 权威报告解读</div>
-            </div>
+            <img src="~images/memberPay/icon5.png" alt />
+            <div class="name">话费立减</div>
+          </li>
+          <li>
+            <img src="~images/memberPay/icon6.png" alt />
+            <div class="name">视频会员立减</div>
+          </li>
+          <li>
+            <img src="~images/memberPay/icon7.png" alt />
+            <div class="name">三折小说</div>
+          </li>
+          <li>
+            <img src="~images/memberPay/icon8.png" alt />
+            <div class="name">信用卡申请</div>
           </li>
         </ul>
       </div>
-      <div class="middle-content-wrapper">
-        <div class="title title2"></div>
-        <ul class="entertainment-list">
-          <li>
-            <div class="bg bg1">
-              <div class="corner">即将上线</div>
-              <div class="tips">话费充值立减10元</div>
-            </div>
-            <button>去充值</button>
-          </li>
-          <li>
-            <div class="bg bg2">
-              <div class="corner">即将上线</div>
-              <div class="tips">视频会员立减10元</div>
-            </div>
-            <button>去充值</button>
-          </li>
-          <li>
-            <div class="bg bg3">
-              <div class="corner">即将上线</div>
-              <div class="tips">专属小说立减10元</div>
-            </div>
-            <button>去充值</button>
-          </li>
-        </ul>
-      </div>
-      <div style="height:100px;"></div>
     </cube-scroll>
     <div class="bottom-btn">
-      <div class="before"></div>
       <div class="btn-left">
         <div>
-          <div class="price">
+          <div class="price" v-if="tradeGoods.length > 0">
             <span class="discount">
-              <span>￥</span>20
+              <b>￥{{tradeGoods[2].discount | formatMoney}}</b>
               <span>/月</span>
             </span>
-            <img src="./images/corner.png" alt />
-            <span class="original">原价￥30</span>
+            <span class="original">原价￥{{tradeGoods[2].amount | formatMoney}}</span>
+          </div>
+          <div class="protocol">
+            <i class="icon-check" @click="chooseProtocol"></i>
+            <router-link
+              :to="{ name: 'memberProtocol', params: { showBottomTabBar: false } }"
+              tag="span"
+            >我已阅读并同意《会员协议》</router-link>
           </div>
         </div>
       </div>
@@ -119,20 +83,62 @@
 
 <script type="text/ecmascript-6">
 import { getLoanCustList } from 'api/loanProduct'
+import { getTradeGoodsList } from 'api/report'
+import { dateToStr } from 'common/js/utils'
+import { getUserInfoApp, showAppTabBar } from 'common/js/utils-app'
+
 export default {
   data () {
     return {
-      loanCustList: []
+      loanCustList: [],
+      tradeGoods: []
     }
+  },
+  filters: {
+    formatMoney (item) {
+      return item / 100
+    },
+    formatTime (item) {
+      return dateToStr(item, 'yyyy/MM/dd')
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    showAppTabBar(false)
+    next()
   },
   created () {
     this._getLoanCustList()
+    this._getTradeGoods()
+  },
+  mounted () {
+    if (getUserInfoApp()) {
+      this.custInfo = getUserInfoApp()
+    } else {
+      this.custInfo = {}
+    }
   },
   methods: {
     _getLoanCustList () {
       getLoanCustList().then(res => {
         this.loanCustList = res.data
       })
+    },
+    _getTradeGoods () {
+      getTradeGoodsList().then(res => {
+        this.tradeGoods = res.data
+        console.log(this.tradeGoods)
+      })
+    },
+    chooseProtocol (e) {
+      if (e.target.className.indexOf('icon-check') > -1) {
+        e.target.classList.remove('icon-check')
+        e.target.classList.add('icon-uncheck')
+        this.chooseProtocolFlag = false
+      } else {
+        e.target.classList.remove('icon-uncheck')
+        e.target.classList.add('icon-check')
+        this.chooseProtocolFlag = true
+      }
     }
   }
 }
@@ -142,70 +148,59 @@ export default {
 @import '~common/stylus/variable';
 @import '~common/stylus/mixin';
 
-.member {
+.member-pay {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  background: #ffffff;
+  z-index: 2;
 
   .header {
     width: 750px;
     height: 338px;
-    background: url('./images/bg-banner-open.png') no-repeat;
+    background: url('~images/member/bg-banner-open.png') no-repeat;
     background-size: cover;
     padding-top: 142px;
     box-sizing: border-box;
+    position: relative;
 
-    .user-info {
-      width: 690px;
-      height: 201px;
-      border: 1px solid transparent;
-      margin: 0 auto 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 45px;
-      box-sizing: border-box;
+    .header-top {
+      width: 206px;
+      height: 44px;
+      background: url('~images/memberPay/bg-banner-top.png') no-repeat;
+      background-size: cover;
+      position: absolute;
+      bottom: 112px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-      > .user-info-left {
-        width: 124px;
-        height: 124px;
-        background: url('./images/user.png') no-repeat;
-        background-size: cover;
-        position: relative;
+    .header-bottom {
+      width: 480px;
+      height: 50px;
+      line-height: 50px;
+      background: rgba(23, 25, 29, 1);
+      border-radius: 26px;
+      text-align: center;
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
 
-        > img {
-          display: block;
-          width: 32px;
-          height: 32px;
-          position: absolute;
-          bottom: 0;
-          right: 0;
-        }
+      span {
+        font-size: 30px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: rgba(223, 191, 169, 1);
       }
 
-      > .user-info-right {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: space-evenly;
-        height: 120px;
-        margin-left: 30px;
-        font-family: PingFangSC-Semibold, PingFang SC;
-
-        > .tel {
-          font-size: 42px;
-          font-weight: 600;
-          color: rgba(23, 25, 29, 1);
-        }
-
-        > .due-time {
-          font-size: 26px;
-          font-weight: 400;
-          color: rgba(133, 116, 105, 1);
-        }
+      .red {
+        font-weight: 600;
+        color: rgba(236, 89, 48, 1);
+        font-size: 38px;
+        vertical-align: bottom;
       }
     }
   }
@@ -220,7 +215,7 @@ export default {
     .icon-new-flash {
       width: 36px;
       height: 37px;
-      background-image: url('./images/broadcast.png');
+      background-image: url('~images/member/broadcast.png');
       background-size: 100% 100%;
       display: inline-block;
       vertical-align: middle;
@@ -247,144 +242,35 @@ export default {
       width: 440px;
       height: 34px;
       margin: 24px auto 24px;
-    }
-
-    .title1 {
-      background: url('./images/title1.png') center center no-repeat;
+      background: url('~images/memberPay/title.png') center center no-repeat;
       background-size: cover;
     }
 
-    .title2 {
-      background: url('./images/title2.png') no-repeat;
-      background-size: cover;
-    }
-
-    .financial-service-list {
-      margin: 0 32px 28px 32px;
+    .equity-list {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       flex-wrap: wrap;
+      justify-content: space-around;
 
-      li {
-        display: flex;
-        align-items: center;
-        margin: 0 0 20px 0;
-        padding: 0 16px;
-        box-sizing: border-box;
-        width: 334px;
-        height: 156px;
-        background: rgba(245, 237, 232, 1);
-        border-radius: 8px;
-
-        &:last-child {
-          flex: 1;
-          justify-content: unset;
-        }
-
-        img {
-          width: 80px;
-          height: 80px;
-        }
-
-        .right-part {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          height: 68px;
-          margin-left: 12px;
-          font-family: PingFangSC-Medium, PingFang SC;
-
-          .name {
-            font-size: 30px;
-            font-weight: 500;
-            color: rgba(55, 55, 55, 1);
-            line-height: 26px;
-          }
-
-          .desc {
-            font-size: 24px;
-            font-weight: 400;
-            color: rgba(182, 133, 104, 1);
-            line-height: 20px;
-            white-space: nowrap;
-          }
-        }
-      }
-    }
-
-    .entertainment-list {
-      margin: 0 32px 28px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-
-      li {
-        width: 218px;
-        height: 280px;
-        border-radius: 8px;
-        border: 1px solid rgba(225, 229, 237, 1);
+      > li {
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 20px 0;
+        width: 25%;
 
-        .bg {
-          width: 218px;
-          height: 200px;
-          margin-bottom: 12px;
-          position: relative;
-
-          .corner {
-            width: 105px;
-            padding: 6px 12px;
-            text-align: center;
-            background: linear-gradient(90deg, rgba(240, 222, 197, 1) 0%, rgba(223, 190, 164, 1) 100%);
-            border-radius: 0px 0px 8px 8px;
-            margin: 0 auto;
-            font-size: 16px;
-            font-family: PingFangSC-Regular, PingFang SC;
-            font-weight: 400;
-            color: rgba(51, 49, 46, 1);
-          }
-
-          .tips {
-            font-size: 24px;
-            font-family: PingFangSC-Regular, PingFang SC;
-            font-weight: 400;
-            color: rgba(76, 76, 76, 1);
-            position: absolute;
-            bottom: 13px;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-          }
+        > img {
+          width: 96px;
+          height: 96px;
         }
 
-        .bg1 {
-          background: url('./images/entertainment1.png') no-repeat;
-          background-size: cover;
-        }
-
-        .bg2 {
-          background: url('./images/entertainment2.png') no-repeat;
-          background-size: cover;
-        }
-
-        .bg3 {
-          background: url('./images/entertainment3.png') no-repeat;
-          background-size: cover;
-        }
-
-        button {
-          width: 136px;
-          height: 48px;
-          background: linear-gradient(138deg, rgba(91, 91, 91, 1) 0%, rgba(51, 51, 51, 1) 100%);
-          border-radius: 31px;
-          font-size: 24px;
-          font-family: PingFangSC-Regular, PingFang SC;
+        > .name {
+          font-size: 26px;
+          font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 400;
-          color: rgba(232, 210, 184, 1);
+          color: rgba(58, 58, 58, 1);
+          line-height: 26px;
+          margin-top: 24px;
         }
       }
     }
@@ -406,12 +292,11 @@ export default {
       height: 110px;
       display: inline-block;
       vertical-align: middle;
-      background: linear-gradient(270deg, rgba(52, 54, 58, 1) 0%, rgba(23, 25, 29, 1) 100%);
+      background: rgba(51, 51, 51, 1);
       border-radius: 100px 0px 0px 100px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      position: relative;
 
       > div {
         height: 110px;
@@ -422,20 +307,16 @@ export default {
         > .price {
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 500;
-          color: rgba(229, 201, 176, 1);
+          color: rgba(242, 227, 204, 1);
           display: flex;
-          align-items: flex-end;
-
-          > img {
-            width: 119px;
-            height: 36px;
-          }
+          align-items: baseline;
 
           > .discount {
-            font-size: 60px;
+            font-size: 34px;
 
-            > span {
-              font-size: 34px;
+            > b {
+              font-size: 50px !important;
+              vertical-align: text-bottom;
             }
           }
 
@@ -443,9 +324,38 @@ export default {
             font-size: 24px;
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
-            color: rgba(217, 174, 135, 1);
+            color: rgba(204, 173, 128, 1);
             text-decoration: line-through;
             margin-left: 16px;
+          }
+        }
+
+        > .protocol {
+          font-size: 24px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: rgba(204, 173, 128, 1);
+          display: flex;
+          margin-left: 12px;
+
+          > .icon-check {
+            width: 24px;
+            height: 25px;
+            background: url('~images/memberPay/check.png') no-repeat;
+            background-size: cover;
+            display: block;
+          }
+
+          > .icon-uncheck {
+            width: 24px;
+            height: 25px;
+            background: url('~images/memberPay/uncheck.png') no-repeat;
+            background-size: cover;
+            display: block;
+          }
+
+          > span {
+            margin-left: 12px;
           }
         }
       }
@@ -458,7 +368,7 @@ export default {
       vertical-align: middle;
       background: linear-gradient(270deg, rgba(240, 222, 197, 1) 0%, rgba(223, 190, 164, 1) 100%);
       border-radius: 0px 100px 100px 0px;
-      font-size: 36px;
+      font-size: 32px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
       color: rgba(51, 49, 46, 1);
