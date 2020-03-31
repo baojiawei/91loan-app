@@ -14,29 +14,16 @@
           eventId="getreport_query"
           v-track-event="{category:'确定弹窗组件', action:'click',opt_label: '查询支付结果'}">查询支付结果</button>
       </div>
-      <transition name="animation-wrapper">
-        <div class="animationWrapper" v-show="animationFlag">
-          <div><img v-lazy=imgUrl></div>
-          <div class="desc">
-            {{ desc }}
-          </div>
-        </div>
-      </transition>
     </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
-import { startAssessment, addBd } from 'common/js/utils-app'
 import { queryPayResult02 } from 'api/report'
 import { mapMutations } from 'vuex'
 export default {
   data () {
-    return {
-      animationFlag: false,
-      desc: '',
-      imgUrl: require('./reportAnimation_logo.gif')
-    }
+    return {}
   },
   props: {
     isPayResultDialogShow: {
@@ -53,41 +40,15 @@ export default {
       this.$emit('toggleShowPayResultDialog')
     },
     _getOrderStatus (e) {
-      addBd('event', e.target.getAttribute('eventId'))
       const _self = this
       const id = this.payData.id
       _self.setOrderData('')
-      startAssessment(id)
-      this.animationFlag = true
-      this._timeCount(5)
-    },
-    _timeCount (envCount) {
-      this.desc = '报告正在生成中...5秒'
-      if (!this.timer) {
-        let timeCount = envCount
-        this.timer = setInterval(() => {
-          if (timeCount > 0 && timeCount <= envCount) {
-            timeCount--
-            if (timeCount === 0) {
-              this.desc = '正在跳转报告详情页...'
-            } else {
-              this.desc = '报告正在生成中...' + timeCount + '秒'
-            }
-          } else {
-            clearInterval(this.timer)
-            this.timer = null
-            queryPayResult02({
-              id: this.payData.id
-            }).then(res => {
-              this.toggleShow()
-              this.$router.push({
-                name: 'reportDetail',
-                params: { id: res.data.id }
-              })
-            })
-          }
-        }, 1000)
-      }
+      queryPayResult02({
+        id: id
+      }).then(res => {
+        this.toggleShow()
+        window.location.reload()
+      })
     },
     ...mapMutations({
       setOrderData: 'ORDER_DATA'

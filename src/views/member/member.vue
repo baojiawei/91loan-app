@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="header-no-open" v-else>
-        <router-link tag="div" :to="{ name: 'memberPay' }" append class="header-right-button">立即开通</router-link>
+        <router-link tag="div" :to="{ name: 'memberPay', params: {tradeGood: tradeGood}  }" append class="header-right-button">立即开通</router-link>
       </div>
       <div class="new-flash-warpper">
         <i class="icon-new-flash"></i>
@@ -115,7 +115,7 @@
           </div>
         </div>
       </div>
-      <router-link tag="div" :to="{ name: 'memberPay' }" append class="btn-right">立即开通</router-link>
+      <router-link tag="div" :to="{ name: 'memberPay', params: {tradeGood: tradeGood} }" append class="btn-right">立即开通</router-link>
     </div>
     <router-view></router-view>
   </div>
@@ -131,7 +131,7 @@ export default {
     return {
       loanCustList: [],
       custInfo: '',
-      tradeGoods: [],
+      tradeGood: '',
       goodsId: 4
     }
   },
@@ -166,7 +166,7 @@ export default {
     },
     _getTradeGoods () {
       getTradeGoodsList().then(res => {
-        this.tradeGoods = res.data
+        this.tradeGood = res.data.filter(item => item.id === this.goodsId)[0]
       })
     }
   }

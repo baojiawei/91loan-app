@@ -1,5 +1,6 @@
 <template>
   <div class="member-pay">
+    <nav-bar :title=title></nav-bar>
     <cube-scroll>
       <div class="header">
         <div class="header-top" />
@@ -73,18 +74,18 @@
           </div>
         </div>
       </div>
-      <div style="height:80px;"></div>
+      <div style="height:120px;"></div>
     </cube-scroll>
     <div class="bottom-btn">
       <div class="btn-left">
         <div>
-          <div class="price" v-if="tradeGoods.length > 0">
+          <div class="price" v-if="tradeGood.id">
             <span class="discount">
-              <b>￥{{tradeGoods[2].discount | formatMoney}}</b>
+              <b>￥{{tradeGood.discount | formatMoney}}</b>
               <span>/月</span>
             </span>
             <img src="~images/member/corner.png" alt />
-            <span class="original">原价￥{{tradeGoods[2].amount | formatMoney}}</span>
+            <span class="original">原价￥{{tradeGood.amount | formatMoney}}</span>
           </div>
           <div class="protocol">
             <i class="icon-check" @click="chooseProtocol"></i>
@@ -95,22 +96,36 @@
           </div>
         </div>
       </div>
-      <div class="btn-right">立即开通</div>
+      <div class="btn-right" @click="_fastPay">立即开通</div>
     </div>
+    <pay-result-dialog
+      :isPayResultDialogShow="isPayResultDialogShow"
+      :payData="payData"
+      @toggleShowPayResultDialog="_toggleShowPayResultDialog"></pay-result-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import navBar from 'components/navBar/navBar'
+import payResultDialog from 'components/payResultDialog/payResultDialog'
 import { getLoanCustList } from 'api/loanProduct'
-import { getTradeGoodsList } from 'api/report'
+import { getTradeGoodsList, addReportForWx } from 'api/report'
 import { dateToStr } from 'common/js/utils'
 import { getUserInfoApp, showAppTabBar } from 'common/js/utils-app'
-
+import { mapGetters, mapMutations } from 'vuex'
+const ORDER_TYPE_H5 = 1
 export default {
+  components: {
+    navBar: navBar,
+    payResultDialog: payResultDialog
+  },
   data () {
     return {
       loanCustList: [],
-      tradeGoods: []
+      title: '黑钻会员',
+      chooseProtocolFlag: true,
+      payData: '',
+      tradeGood: ''
     }
   },
   filters: {
@@ -125,11 +140,20 @@ export default {
     showAppTabBar(false)
     next()
   },
+  computed: {
+    ...mapGetters([
+      'orderData'
+    ])
+  },
   created () {
     this._getLoanCustList()
-    this._getTradeGoods()
+    if (this.orderData.id !== undefined) {
+      this.payData = this.orderData
+      this._toggleShowPayResultDialog()
+    }
   },
   mounted () {
+    this.tradeGood = this.$route.params.tradeGood
     if (getUserInfoApp()) {
       this.custInfo = getUserInfoApp()
     } else {
@@ -145,7 +169,6 @@ export default {
     _getTradeGoods () {
       getTradeGoodsList().then(res => {
         this.tradeGoods = res.data
-        console.log(this.tradeGoods)
       })
     },
     chooseProtocol (e) {
@@ -158,7 +181,43 @@ export default {
         e.target.classList.add('icon-check')
         this.chooseProtocolFlag = true
       }
-    }
+    },
+    _fastPay () {
+      if (!this.chooseProtocolFlag) {
+        this.$createToast({
+          txt: '请勾选会员协议',
+          time: 2000,
+          type: 'warn'
+        }).show()
+        return
+      }
+      if (getUserInfoApp()) {
+        this._weixinPayForH5()
+      } else {
+        getUserInfoApp(true)
+      }
+    },
+    _weixinPayForH5 () {
+      const _self = this
+      addReportForWx({
+        payType: ORDER_TYPE_H5,
+        telNo: getUserInfoApp().telNo,
+        goodsId: this.tradeGood.id
+      }).then((res) => {
+        this.payData = res.data
+        this._toggleShowPayResultDialog()
+        _self.setOrderData(res.data)
+        window.location.href = res.data.mwebUrl +
+            '&redirect_url=' +
+            encodeURIComponent(process.env.VUE_APP_APP_URL + '/market/#/member')
+      })
+    },
+    _toggleShowPayResultDialog () {
+      this.isPayResultDialogShow = !this.isPayResultDialogShow
+    },
+    ...mapMutations({
+      setOrderData: 'ORDER_DATA'
+    })
   }
 }
 </script>
