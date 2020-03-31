@@ -96,20 +96,24 @@
           </li>
         </ul>
       </div>
-      <div class="bottom-btn">
-        <div class="btn-left">
-          <div>
-            <div class="price">
-              <span class="discount">
-                <span>￥</span>20<span>/月</span>
-              </span>
-              <span class="original">原价￥30</span>
-            </div>
+      <div style="height:100px;"></div>
+    </cube-scroll>
+    <div class="bottom-btn">
+      <div class="before"></div>
+      <div class="btn-left">
+        <div>
+          <div class="price">
+            <span class="discount">
+              <span>￥</span>20
+              <span>/月</span>
+            </span>
+            <img src="./images/corner.png" alt />
+            <span class="original">原价￥30</span>
           </div>
         </div>
-        <div class="btn-right">立即开通</div>
       </div>
-    </cube-scroll>
+      <div class="btn-right">立即开通</div>
+    </div>
   </div>
 </template>
 
@@ -407,7 +411,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      position:relative;
+      position: relative;
 
       > div {
         height: 110px;
@@ -420,7 +424,12 @@ export default {
           font-weight: 500;
           color: rgba(229, 201, 176, 1);
           display: flex;
-          align-items: baseline;
+          align-items: flex-end;
+
+          > img {
+            width: 119px;
+            height: 36px;
+          }
 
           > .discount {
             font-size: 60px;
