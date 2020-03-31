@@ -102,7 +102,6 @@
       <div v-if="!custInfo.vip" style="height:100px;"></div>
     </cube-scroll>
     <div class="bottom-btn" v-if="!custInfo.vip">
-      <div class="before"></div>
       <div class="btn-left">
         <div>
           <div class="price">
@@ -453,7 +452,7 @@ export default {
     }
   }
 
-  .bottom-btn {
+  >.bottom-btn {
     width: 690px;
     height: 110px;
     position: fixed;
@@ -488,6 +487,7 @@ export default {
           color: rgba(229, 201, 176, 1);
           display: flex;
           align-items: flex-end;
+          margin-bottom: 8px;
 
           > img {
             width: 119px;

@@ -56,6 +56,24 @@
           </li>
         </ul>
       </div>
+      <div class="pay-wrapper">
+        <div class="coupon">
+          <div class="coupon-title">优惠券</div>
+          <div class="select-coupon">
+            <label>优惠券</label>
+            <div>暂无优惠券</div>
+          </div>
+        </div>
+        <div class="pay-way">
+          <div class="pay-way-title">支付方式</div>
+          <div class="pay-way-btn">
+            <i class="icon-wx"></i>
+            <span>微信支付</span>
+            <i class="icon-wx-check"></i>
+          </div>
+        </div>
+      </div>
+      <div style="height:80px;"></div>
     </cube-scroll>
     <div class="bottom-btn">
       <div class="btn-left">
@@ -65,6 +83,7 @@
               <b>￥{{tradeGoods[2].discount | formatMoney}}</b>
               <span>/月</span>
             </span>
+            <img src="~images/member/corner.png" alt />
             <span class="original">原价￥{{tradeGoods[2].amount | formatMoney}}</span>
           </div>
           <div class="protocol">
@@ -276,24 +295,108 @@ export default {
     }
   }
 
+  .pay-wrapper {
+    border-top: 12px solid #F4F6F8;
+
+    .coupon {
+      padding: 30px 36px 48px 36px;
+      box-sizing: border-box;
+
+      .coupon-title {
+        font-size: 36px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: rgba(46, 46, 46, 1);
+        margin-bottom: 30px;
+      }
+
+      .select-coupon {
+        width: 100%;
+        height: 72px;
+        background: rgba(245, 237, 232, 1);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        box-sizing: border-box;
+
+        label {
+          font-size: 28px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: rgba(57, 57, 57, 1);
+        }
+
+        >div {
+          font-size: 28px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: rgba(182, 133, 104, 1);
+        }
+      }
+    }
+
+    .pay-way {
+      padding: 0 36px 40px 36px;
+      box-sizing: border-box;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(55, 55, 55, 1);
+
+      .pay-way-title {
+        font-size: 34px;
+        margin-bottom: 30px;
+      }
+
+      .pay-way-btn {
+        width: 320px;
+        height: 96px;
+        line-height: 96px;
+        text-align: center;
+        border-radius: 2px;
+        border: 3px solid rgba(228, 200, 174, 1);
+        font-size: 30px;
+        position: relative;
+
+        >.icon-wx {
+          position: absolute;
+          top: 30px;
+          left: 40px;
+          width: 44px;
+          height: 36px;
+          background: url('~images/memberPay/icon-wx.png') no-repeat;
+          background-size: cover;
+        }
+
+        >.icon-wx-check {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 54px;
+          height: 54px;
+          background: url('~images/memberPay/icon-wx-check.png') no-repeat;
+          background-size: cover;
+        }
+      }
+    }
+  }
+
   .bottom-btn {
-    width: 690px;
+    width: 100%;
     height: 110px;
     position: fixed;
-    bottom: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 100px;
+    bottom: 0;
     z-index: 1;
     display: flex;
+    background: rgba(51, 51, 51, 1);
+    padding-left: 20px;
+    box-sizing: border-box;
 
     > .btn-left {
-      width: 450px;
       height: 110px;
       display: inline-block;
       vertical-align: middle;
-      background: rgba(51, 51, 51, 1);
-      border-radius: 100px 0px 0px 100px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -309,7 +412,12 @@ export default {
           font-weight: 500;
           color: rgba(242, 227, 204, 1);
           display: flex;
-          align-items: baseline;
+          align-items: center;
+
+          > img {
+            width: 119px;
+            height: 36px;
+          }
 
           > .discount {
             font-size: 34px;
@@ -362,12 +470,10 @@ export default {
     }
 
     > .btn-right {
-      width: 240px;
-      height: 110px;
-      display: inline-block;
-      vertical-align: middle;
+      width: 220px;
+      height: 82px;
       background: linear-gradient(270deg, rgba(240, 222, 197, 1) 0%, rgba(223, 190, 164, 1) 100%);
-      border-radius: 0px 100px 100px 0px;
+      border-radius: 52px;
       font-size: 32px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
@@ -375,6 +481,9 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+      position: absolute;
+      right: 20px;
+      bottom: 15px;
     }
   }
 }
