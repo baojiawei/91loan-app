@@ -62,6 +62,7 @@ module.exports = {
       .set('api', resolve('src/api'))
       .set('utils', resolve('src/utils'))
       .set('pojo', resolve('src/pojo'))
+      .set('images', resolve('src/assets/images'))
 
     config.when(process.env.VUE_APP_ENV !== 'development', config => {
       config.optimization.minimize(true)

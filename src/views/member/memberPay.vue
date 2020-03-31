@@ -25,7 +25,7 @@
         <ul class="financial-service-list">
           <li>
             <div class="left-part">
-              <img src="~images/member/icon1.png" alt />
+              <img src="./images/icon1.png" alt />
             </div>
             <div class="right-part">
               <div class="name">会员产品</div>
@@ -34,7 +34,7 @@
           </li>
           <li>
             <div class="left-part">
-              <img src="~images/member/icon2.png" alt />
+              <img src="./images/icon2.png" alt />
             </div>
             <div class="right-part">
               <div class="name">审核加速</div>
@@ -43,7 +43,7 @@
           </li>
           <li>
             <div class="left-part">
-              <img src="images/member/icon3.png" alt />
+              <img src="./images/icon3.png" alt />
             </div>
             <div class="right-part">
               <div class="name">信用卡代偿</div>
@@ -52,7 +52,7 @@
           </li>
           <li>
             <div class="left-part">
-              <img src="~images/member/icon4.png" alt />
+              <img src="./images/icon4.png" alt />
             </div>
             <div class="right-part">
               <div class="name">信用卡免费申请</div>
@@ -61,7 +61,7 @@
           </li>
           <li>
             <div class="left-part">
-              <img src="~images/member/icon5.png" alt />
+              <img src="./images/icon5.png" alt />
             </div>
             <div class="right-part">
               <div class="name">信用分析</div>
@@ -104,11 +104,10 @@
         <div>
           <div class="price">
             <span class="discount">
-              <span>￥</span>
-              <b>20</b>
+              <span>￥</span>20
               <span>/月</span>
             </span>
-            <img src="~images/member/corner.png" alt />
+            <img src="./images/corner.png" alt />
             <span class="original">原价￥30</span>
           </div>
         </div>
@@ -153,7 +152,7 @@ export default {
   .header {
     width: 750px;
     height: 338px;
-    background: url('~images/member/bg-banner-open.png') no-repeat;
+    background: url('./images/bg-banner-open.png') no-repeat;
     background-size: cover;
     padding-top: 142px;
     box-sizing: border-box;
@@ -172,7 +171,7 @@ export default {
       > .user-info-left {
         width: 124px;
         height: 124px;
-        background: url('~images/member/user.png') no-repeat;
+        background: url('./images/user.png') no-repeat;
         background-size: cover;
         position: relative;
 
@@ -221,7 +220,7 @@ export default {
     .icon-new-flash {
       width: 36px;
       height: 37px;
-      background-image: url('~images/member/broadcast.png');
+      background-image: url('./images/broadcast.png');
       background-size: 100% 100%;
       display: inline-block;
       vertical-align: middle;
@@ -251,12 +250,12 @@ export default {
     }
 
     .title1 {
-      background: url('~images/member/title1.png') center center no-repeat;
+      background: url('./images/title1.png') center center no-repeat;
       background-size: cover;
     }
 
     .title2 {
-      background: url('~images/member/title2.png') no-repeat;
+      background: url('./images/title2.png') no-repeat;
       background-size: cover;
     }
 
@@ -363,17 +362,17 @@ export default {
         }
 
         .bg1 {
-          background: url('~images/member/entertainment1.png') no-repeat;
+          background: url('./images/entertainment1.png') no-repeat;
           background-size: cover;
         }
 
         .bg2 {
-          background: url('~images/member/entertainment2.png') no-repeat;
+          background: url('./images/entertainment2.png') no-repeat;
           background-size: cover;
         }
 
         .bg3 {
-          background: url('~images/member/entertainment3.png') no-repeat;
+          background: url('./images/entertainment3.png') no-repeat;
           background-size: cover;
         }
 
