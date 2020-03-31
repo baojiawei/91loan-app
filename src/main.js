@@ -3,6 +3,7 @@ import './cube-ui'
 import router from './router'
 import store from './store/index'
 import App from './App.vue'
+import VueAnimateNumber from 'vue-animate-number'
 import vueLazyload from 'vue-lazyload'
 import animated from 'animate.css'
 import ba from 'vue-ba'
@@ -17,6 +18,7 @@ Vue.config.productionTip = false
 Vue.use(vueLazyload, {
   loading: require('common/images/loading.gif')
 })
+Vue.use(VueAnimateNumber)
 Vue.use(animated)
 Vue.use(ba, { siteId: '21be3d376087232076a0431c24339611' })
 

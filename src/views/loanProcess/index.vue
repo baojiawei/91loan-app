@@ -10,42 +10,42 @@
             <ul>
               <li v-if="custInfo.idCardStatus">
                 <div class="name">
-                  <img src="./icon-identity.png" alt="">
+                  <img src="~images/loanProcess/icon-identity.png" alt="">
                   <span>身份认证</span>
                 </div>
                 <div class="status finish">已完成</div>
               </li>
               <router-link v-else tag="li" :to="{ name: 'realName', params: { fromRouterName: 'loanProcess' } }">
                 <div class="name">
-                  <img src="./icon-identity.png" alt="">
+                  <img src="~images/loanProcess/icon-identity.png" alt="">
                   <span>身份认证</span>
                 </div>
                 <div class="status todo">请补充&nbsp;></div>
               </router-link>
               <li v-if="custInfo.informStatus">
                 <div class="name">
-                  <img src="./icon-application.png" alt="">
+                  <img src="~images/loanProcess/icon-application.png" alt="">
                   <span>申请信息</span>
                 </div>
                 <div class="status finish">已完成</div>
               </li>
               <router-link v-else tag="li" to="applicationInfo" append>
                 <div class="name">
-                  <img src="./icon-application.png" alt="">
+                  <img src="~images/loanProcess/icon-application.png" alt="">
                   <span>申请信息</span>
                 </div>
                 <div class="status todo">请补充&nbsp;></div>
               </router-link>
               <li v-if="custInfo.optStatus">
                 <div class="name">
-                  <img src="./icon-operator.png" alt="">
+                  <img src="~images/loanProcess/icon-operator.png" alt="">
                   <span>运营商认证</span>
                 </div>
                 <div class="status finish">已完成</div>
               </li>
               <li v-else @click="_goToOperator">
                 <div class="name">
-                  <img src="./icon-operator.png" alt="">
+                  <img src="~images/loanProcess/icon-operator.png" alt="">
                   <span>运营商认证</span>
                 </div>
                 <div class="status todo">请补充&nbsp;></div>
@@ -220,7 +220,7 @@ export default {
     .header
       width: 100%
       height: 256px
-      background: url("./header.png") no-repeat
+      background: url("~images/loanProcess/header.png") no-repeat
       background-size: cover
     .middle
       .tit
