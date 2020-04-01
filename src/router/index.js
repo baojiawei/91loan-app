@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import protocols from './modules/protocols'
 import loanProcess from './modules/loanProcess'
 import member from './modules/member'
+import report from './modules/report'
 
 Vue.use(VueRouter)
 
@@ -25,7 +26,8 @@ const routes = [
   },
   protocols,
   loanProcess,
-  member
+  member,
+  report
 ]
 const router = new VueRouter({
   routes

@@ -46,7 +46,7 @@
           </li>
           <li>
             <div class="left-part">
-              <img src="images/member/icon3.png" alt />
+              <img src="~images/member/icon3.png" alt />
             </div>
             <div class="right-part">
               <div class="name">信用卡代偿</div>
@@ -107,11 +107,11 @@
           <div class="price">
             <span class="discount">
               <span>￥</span>
-              <b>20</b>
+              <b>{{tradeGood.discount | formatMoney}}</b>
               <span>/月</span>
             </span>
             <img src="~images/member/corner.png" alt />
-            <span class="original">原价￥30</span>
+            <span class="original">原价￥{{tradeGood.amount | formatMoney}}</span>
           </div>
         </div>
       </div>
@@ -495,7 +495,7 @@ export default {
           }
 
           > .discount {
-            font-size: 60px;
+            font-size: 50px;
 
             > span {
               font-size: 34px;
