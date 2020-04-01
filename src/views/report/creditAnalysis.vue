@@ -58,40 +58,36 @@ export default {
         telNo: ''
       },
       schema: {
-        groups: [
+        fields: [
           {
-            fields: [
-              {
-                type: 'input',
-                modelKey: 'idCardName',
-                label: '姓名',
-                props: {
-                  placeholder: '请输入姓名'
-                },
-                // validating when blur
-                trigger: 'blur'
-              },
-              {
-                type: 'input',
-                modelKey: 'idCardCode',
-                label: '身份证',
-                props: {
-                  placeholder: '请输入身份证号'
-                },
-                // validating when blur
-                trigger: 'blur'
-              },
-              {
-                type: 'input',
-                modelKey: 'telNo',
-                label: '手机号',
-                props: {
-                  placeholder: '请输入手机号'
-                },
-                // validating when blur
-                trigger: 'blur'
-              }
-            ]
+            type: 'input',
+            modelKey: 'idCardName',
+            label: '姓名',
+            props: {
+              placeholder: '请输入姓名'
+            },
+            // validating when blur
+            trigger: 'blur'
+          },
+          {
+            type: 'input',
+            modelKey: 'idCardCode',
+            label: '身份证',
+            props: {
+              placeholder: '请输入身份证号'
+            },
+            // validating when blur
+            trigger: 'blur'
+          },
+          {
+            type: 'input',
+            modelKey: 'telNo',
+            label: '手机号',
+            props: {
+              placeholder: '请输入手机号'
+            },
+            // validating when blur
+            trigger: 'blur'
           }
         ]
       },
@@ -131,7 +127,13 @@ export default {
     validateHandler (result) {
       this.validity = result.validity
       this.valid = result.valid
-      console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
+      console.log(
+        'validity',
+        result.validity,
+        result.valid,
+        result.dirty,
+        result.firstInvalidFieldIndex
+      )
     }
   },
   components: {
@@ -217,13 +219,22 @@ export default {
 
   >.input-wrapper {
     margin: 92px 32px 36px 32px;
-    padding: 48px 32px;
+    padding: 30px 32px 48px 32px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 6px 24px 0px rgba(152, 165, 209, 0.3);
     border-radius: 24px;
     border: 1px solid rgba(229, 237, 250, 1);
 
-    .cube-input {
+    .cube-form-item {
+      padding: 0;
+
+      .cube-input-field {
+        text-align: right;
+      }
+    }
+
+    .cube-form-item:last-child::after {
+      display: block;
     }
 
     .choose-protocol {
