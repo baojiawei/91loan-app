@@ -127,6 +127,11 @@ export default {
       setTimeout(function () {
         e.target.scrollIntoViewIfNeeded()
       }, 400)
+    },
+    validateHandler (result) {
+      this.validity = result.validity
+      this.valid = result.valid
+      console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
     }
   },
   components: {
