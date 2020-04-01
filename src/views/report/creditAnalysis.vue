@@ -17,42 +17,15 @@
       </div>
     </div>
     <div class="input-wrapper">
-      <cube-input
-        v-model="inputProps[0].text"
-        :placeholder="inputProps[0].placeholder"
-        :type="inputProps[0].type"
-        :maxlength="inputProps[0].maxlength"
-        :clearable="true"
-        :disabled="inputProps[0].disabled"
-        @blur="fixIosBug"
-        @focus="fixAndroidBug($event, 'custName')"
-        ref="custName"
-        eventId="getreport_inputname"
-      ></cube-input>
-      <cube-input
-        v-model="inputProps[1].text"
-        :placeholder="inputProps[1].placeholder"
-        :type="inputProps[1].type"
-        :maxlength="inputProps[1].maxlength"
-        :clearable="true"
-        :disabled="inputProps[1].disabled"
-        @blur="fixIosBug"
-        @focus="fixAndroidBug($event, 'idCardCode')"
-        ref="idCardCode"
-        eventId="getreport_inputidcard"
-      ></cube-input>
-      <cube-input
-        v-model="inputProps[2].text"
-        :placeholder="inputProps[2].placeholder"
-        :type="inputProps[2].type"
-        :maxlength="inputProps[2].maxlength"
-        :clearable="true"
-        :disabled="inputProps[2].disabled"
-        @blur="fixIosBug"
-        @focus="fixAndroidBug($event, 'telNo')"
-        ref="telNo"
-        eventId="getreport_inputtelno"
-      ></cube-input>
+      <cube-form
+        :model="model"
+        :schema="schema"
+        :immediate-validate="false"
+        :options="options"
+        @validate="validateHandler"
+        @submit="submitHandler"
+        @reset="resetHandler"
+      ></cube-form>
       <div class="choose-protocol">
         <i class="icon icon-dagou" @click="chooseProtocol"></i>
         <div>
@@ -76,30 +49,56 @@ export default {
   data () {
     return {
       title: '网贷检测',
-      inputProps: [
-        {
-          placeholder: '请输入姓名',
-          type: 'text',
-          maxlength: 11,
-          text: '',
-          disabled: false
-        },
-        {
-          placeholder: '请输入身份证号',
-          type: 'text',
-          maxlength: 18,
-          text: '',
-          disabled: false
-        },
-        {
-          placeholder: '请输入手机号',
-          type: 'text',
-          maxlength: 11,
-          text: '',
-          disabled: false
-        }
-      ],
-      loanCustList: []
+      loanCustList: [],
+      validity: {},
+      valid: undefined,
+      model: {
+        idCardName: '',
+        idCardCode: '',
+        telNo: ''
+      },
+      schema: {
+        groups: [
+          {
+            fields: [
+              {
+                type: 'input',
+                modelKey: 'idCardName',
+                label: '姓名',
+                props: {
+                  placeholder: '请输入姓名'
+                },
+                // validating when blur
+                trigger: 'blur'
+              },
+              {
+                type: 'input',
+                modelKey: 'idCardCode',
+                label: '身份证',
+                props: {
+                  placeholder: '请输入身份证号'
+                },
+                // validating when blur
+                trigger: 'blur'
+              },
+              {
+                type: 'input',
+                modelKey: 'telNo',
+                label: '手机号',
+                props: {
+                  placeholder: '请输入手机号'
+                },
+                // validating when blur
+                trigger: 'blur'
+              }
+            ]
+          }
+        ]
+      },
+      options: {
+        scrollToInvalidField: true,
+        layout: 'standard' // classic fresh
+      }
     }
   },
   filters: {
@@ -215,14 +214,11 @@ export default {
     margin: 92px 32px 36px 32px;
     padding: 48px 32px;
     background: rgba(255, 255, 255, 1);
-    box-shadow:0px 6px 24px 0px rgba(152,165,209,0.3);
-    border-radius:24px;
-    border:1px solid rgba(229,237,250,1);
+    box-shadow: 0px 6px 24px 0px rgba(152, 165, 209, 0.3);
+    border-radius: 24px;
+    border: 1px solid rgba(229, 237, 250, 1);
 
     .cube-input {
-      margin-bottom: 20px;
-      border-none();
-      border-bottom: 1px solid #e6e6e6;
     }
 
     .choose-protocol {

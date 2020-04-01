@@ -11,7 +11,8 @@ import {
   Scroll,
   Slide,
   Toast,
-  checker
+  checker,
+  Form
 } from 'cube-ui'
 
 Vue.use(Input)
@@ -20,3 +21,4 @@ Vue.use(Textarea)
 Vue.use(Scroll)
 Vue.use(Slide)
 Vue.use(checker)
+Vue.use(Form)
