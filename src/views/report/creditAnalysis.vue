@@ -60,6 +60,8 @@
         </div>
       </div>
     </div>
+    <div class="desc1"></div>
+    <div class="desc2"></div>
     <button class="bottom-btn" @click="queryReport">立即查询</button>
     <transition name="slide">
       <router-view></router-view>
@@ -70,7 +72,11 @@
 <script type="text/ecmascript-6">
 import navBar from 'components/navBar/navBar'
 import { getLoanCustList } from 'api/loanProduct'
-import { checkPhone, checkCustName, checkIdCardCode } from 'common/js/validator'
+import {
+  checkPhone,
+  checkCustName,
+  checkIdCardCode
+} from 'common/js/validator'
 
 export default {
   data () {
@@ -298,6 +304,11 @@ export default {
         }
       }
     }
+  }
+
+  .desc1 {
+    border-top: 12px solid #F4F6F8;
+    border-bottom: 12px solid #F4F6F8;
   }
 
   >.bottom-btn {
