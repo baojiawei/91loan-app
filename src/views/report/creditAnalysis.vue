@@ -22,12 +22,12 @@
         :schema="schema"
         :immediate-validate="false"
         :options="options"
-        @validate="validateHandler"
+        :submitAlwaysValidate="true"
         @submit="submitHandler"
-        @reset="resetHandler"
+        @validate="validateHandler"
       ></cube-form>
       <div class="choose-protocol">
-        <i class="icon icon-dagou" @click="chooseProtocol"></i>
+        <i class="check" @click="chooseProtocol"></i>
         <div>
           我已阅读并同意
           <router-link tag="span" :to="{ name: 'reportProtocol' }">《信息收集授权协议》</router-link>
@@ -42,7 +42,6 @@
 
 <script type="text/ecmascript-6">
 import navBar from 'components/navBar/navBar'
-import { addBd } from 'common/js/utils-app'
 import { getLoanCustList } from 'api/loanProduct'
 
 export default {
@@ -50,6 +49,7 @@ export default {
     return {
       title: '网贷检测',
       loanCustList: [],
+      chooseProtocolFlag: true,
       validity: {},
       valid: undefined,
       model: {
@@ -107,33 +107,41 @@ export default {
   },
   methods: {
     _getLoanCustList () {
+      const _self = this
       getLoanCustList().then(res => {
-        this.loanCustList = res.data
-        this.loanCustList.forEach(item => {
+        _self.loanCustList = res.data
+        _self.loanCustList.forEach(item => {
           item.randTime = Math.floor(Math.random() * 10 + 1)
         })
       })
     },
-    fixIosBug () {
-      document.documentElement.scrollTop = 0
-      document.body.scrollTop = 0
+    chooseProtocol (e) {
+      if (e.target.className === 'check') {
+        e.target.classList.remove('check')
+        e.target.classList.add('uncheck')
+        this.chooseProtocolFlag = false
+      } else {
+        e.target.classList.remove('uncheck')
+        e.target.classList.add('check')
+        this.chooseProtocolFlag = true
+      }
     },
-    fixAndroidBug (e, tagName) {
-      addBd('event', this.$refs[tagName].$attrs.eventId)
-      setTimeout(function () {
-        e.target.scrollIntoViewIfNeeded()
-      }, 400)
+    submitHandler (e) {
+      e.preventDefault()
+      if (!this.chooseProtocolFlag) {
+        this.$createToast({
+          txt: '请勾选服务协议',
+          time: 2000,
+          type: 'warn'
+        }).show()
+        return
+      }
+      console.log('submit', e)
     },
     validateHandler (result) {
       this.validity = result.validity
       this.valid = result.valid
-      console.log(
-        'validity',
-        result.validity,
-        result.valid,
-        result.dirty,
-        result.firstInvalidFieldIndex
-      )
+      console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
     }
   },
   components: {
@@ -241,10 +249,21 @@ export default {
       font-family: PingFangSC-Regular;
       color: #5D5D77;
       font-size: 0;
+      margin-top: 38px;
 
-      > i {
+      > .check {
         inline-block-direction();
-        font-size: $font-size-32;
+        width: 24px;
+        height: 25px;
+        background: url("~images/creditAnalysis/check.png") no-repeat
+        background-size: cover;
+      }
+      > .uncheck {
+        inline-block-direction();
+        width: 24px;
+        height: 25px;
+        background: url("~images/creditAnalysis/uncheck.png") no-repeat
+        background-size: cover;
       }
 
       > div {
