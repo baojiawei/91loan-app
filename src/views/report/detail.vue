@@ -153,7 +153,6 @@ export default {
         return
       }
       console.log('submit')
-      this.$router.push({ name: 'detail' })
     },
     fixIosBug () {
       document.documentElement.scrollTop = 0
