@@ -17,23 +17,50 @@
       </div>
     </div>
     <div class="input-wrapper">
-      <cube-form
-        :model="model"
-        :schema="schema"
-        :immediate-validate="false"
-        :options="options"
-        :submitAlwaysValidate="true"
-        @submit="submitHandler"
-        @validate="validateHandler"
-      ></cube-form>
+      <div class="validator-item">
+        <cube-input
+          v-model="inputProps[0].text"
+          :placeholder="inputProps[0].placeholder"
+          :type="inputProps[0].type"
+          :maxlength="inputProps[0].maxlength"
+          :clearable="true"
+          @blur="fixIosBug"
+          ref="idCardName"
+        >
+          <template slot="prepend">姓名</template>
+        </cube-input>
+        <cube-input
+          v-model="inputProps[1].text"
+          :placeholder="inputProps[1].placeholder"
+          :type="inputProps[1].type"
+          :maxlength="inputProps[1].maxlength"
+          :clearable="true"
+          @blur="fixIosBug"
+          ref="idCardCode"
+        >
+          <template slot="prepend">身份证</template>
+        </cube-input>
+        <cube-input
+          v-model="inputProps[2].text"
+          :placeholder="inputProps[2].placeholder"
+          :type="inputProps[2].type"
+          :maxlength="inputProps[2].maxlength"
+          :clearable="true"
+          @blur="fixIosBug"
+          ref="telNo"
+        >
+          <template slot="prepend">手机号</template>
+        </cube-input>
+      </div>
       <div class="choose-protocol">
         <i class="check" @click="chooseProtocol"></i>
         <div>
           我已阅读并同意
-          <router-link tag="span" :to="{ name: 'reportProtocol' }">《信息收集授权协议》</router-link>
+          <router-link tag="span" :to="{ name: 'reportProtocol' }">《服务协议》</router-link>
         </div>
       </div>
     </div>
+    <button class="bottom-btn" @click="queryReport">立即查询</button>
     <transition name="slide">
       <router-view></router-view>
     </transition>
@@ -43,6 +70,7 @@
 <script type="text/ecmascript-6">
 import navBar from 'components/navBar/navBar'
 import { getLoanCustList } from 'api/loanProduct'
+import { checkPhone, checkCustName, checkIdCardCode } from 'common/js/validator'
 
 export default {
   data () {
@@ -50,51 +78,26 @@ export default {
       title: '网贷检测',
       loanCustList: [],
       chooseProtocolFlag: true,
-      validity: {},
-      valid: undefined,
-      model: {
-        idCardName: '',
-        idCardCode: '',
-        telNo: ''
-      },
-      schema: {
-        fields: [
-          {
-            type: 'input',
-            modelKey: 'idCardName',
-            label: '姓名',
-            props: {
-              placeholder: '请输入姓名'
-            },
-            // validating when blur
-            trigger: 'blur'
-          },
-          {
-            type: 'input',
-            modelKey: 'idCardCode',
-            label: '身份证',
-            props: {
-              placeholder: '请输入身份证号'
-            },
-            // validating when blur
-            trigger: 'blur'
-          },
-          {
-            type: 'input',
-            modelKey: 'telNo',
-            label: '手机号',
-            props: {
-              placeholder: '请输入手机号'
-            },
-            // validating when blur
-            trigger: 'blur'
-          }
-        ]
-      },
-      options: {
-        scrollToInvalidField: true,
-        layout: 'standard' // classic fresh
-      }
+      inputProps: [
+        {
+          placeholder: '请输入姓名',
+          type: 'text',
+          maxlength: 11,
+          text: ''
+        },
+        {
+          placeholder: '请输入身份证号',
+          type: 'text',
+          maxlength: 18,
+          text: ''
+        },
+        {
+          placeholder: '请输入手机号',
+          type: 'text',
+          maxlength: 11,
+          text: ''
+        }
+      ]
     }
   },
   filters: {
@@ -126,22 +129,28 @@ export default {
         this.chooseProtocolFlag = true
       }
     },
-    submitHandler (e) {
-      e.preventDefault()
+    queryReport () {
       if (!this.chooseProtocolFlag) {
         this.$createToast({
           txt: '请勾选服务协议',
           time: 2000,
           type: 'warn'
         }).show()
+      }
+      if (!checkCustName(this.inputProps[0].text, this.$refs.idCardName)) {
         return
       }
-      console.log('submit', e)
+      if (!checkIdCardCode(this.inputProps[1].text, this.$refs.idCardCode)) {
+        return
+      }
+      if (!checkPhone(this.inputProps[2].text, this.$refs.telNo)) {
+        return
+      }
+      console.log('submit')
     },
-    validateHandler (result) {
-      this.validity = result.validity
-      this.valid = result.valid
-      console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex)
+    fixIosBug () {
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
     }
   },
   components: {
@@ -233,16 +242,28 @@ export default {
     border-radius: 24px;
     border: 1px solid rgba(229, 237, 250, 1);
 
-    .cube-form-item {
+    .cube-input {
+      height: 93px;
+      line-height: 93px;
+      margin-bottom: 6px;
       padding: 0;
-
-      .cube-input-field {
-        text-align: right;
-      }
     }
 
-    .cube-form-item:last-child::after {
-      display: block;
+    .cube-input::after {
+      border: 1PX solid transparent;
+      border-bottom: 1PX solid #e6e6e6;
+    }
+
+    .cube-input-field {
+      text-align: right;
+      font-size: 32px;
+    }
+
+    .cube-input-prepend {
+      font-size: 32px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(43, 45, 48, 1);
     }
 
     .choose-protocol {
@@ -255,23 +276,41 @@ export default {
         inline-block-direction();
         width: 24px;
         height: 25px;
-        background: url("~images/creditAnalysis/check.png") no-repeat
+        background: url('~images/creditAnalysis/check.png') no-repeat;
         background-size: cover;
       }
+
       > .uncheck {
         inline-block-direction();
         width: 24px;
         height: 25px;
-        background: url("~images/creditAnalysis/uncheck.png") no-repeat
+        background: url('~images/creditAnalysis/uncheck.png') no-repeat;
         background-size: cover;
       }
 
       > div {
         inline-block-direction();
         margin-left: 12px;
-        font-size: $font-size-24;
+        font-size: 24px;
+
+        > span {
+          color: rgba(80, 131, 247, 1);
+        }
       }
     }
+  }
+
+  >.bottom-btn {
+    width: 100%;
+    height: 98px;
+    background: linear-gradient(90deg, rgba(57, 157, 250, 1) 0%, rgba(105, 102, 243, 1) 100%);
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    font-size: 40px;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 1);
   }
 }
 </style>
