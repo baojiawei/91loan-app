@@ -28,26 +28,49 @@
         <report-wrapper
           :title="reportWrapperTextArr[0].title"
           :advice="reportWrapperTextArr[0].advice"
-        >
-          <template name="content">13231312</template>
-        </report-wrapper>
+        ></report-wrapper>
         <report-wrapper
           :title="reportWrapperTextArr[1].title"
           :advice="reportWrapperTextArr[1].advice"
-        >
-          <template name="content">13231312</template>
-        </report-wrapper>
+        ></report-wrapper>
         <report-wrapper
           :title="reportWrapperTextArr[2].title"
           :advice="reportWrapperTextArr[2].advice"
         >
-          <template name="content">13231312</template>
+          <ul class="common-list">
+            <li>
+              <span class="circle"></span>
+              <span>运营商认证：</span>
+              <span>验证一致</span>
+            </li>
+            <li>
+              <span class="circle"></span>
+              <span>在网时长：</span>
+              <span>3～6个月</span>
+            </li>
+            <li>
+              <span class="circle"></span>
+              <span>在网状态：</span>
+              <span>正常</span>
+            </li>
+          </ul>
         </report-wrapper>
         <report-wrapper
           :title="reportWrapperTextArr[3].title"
           :advice="reportWrapperTextArr[3].advice"
         >
-          <template name="content">13231312</template>
+          <ul class="common-list">
+            <li>
+              <span class="circle"></span>
+              <span>查询主体是否命中失信黑名单：</span>
+              <span>否</span>
+            </li>
+            <li>
+              <span class="circle"></span>
+              <span>查询主体是否命中法院执行：</span>
+              <span>否</span>
+            </li>
+          </ul>
         </report-wrapper>
       </cube-scroll>
     </div>
@@ -165,6 +188,40 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .common-list {
+    > li {
+      margin-bottom: 20px;
+
+      >.circle {
+        width: 10px;
+        height: 10px;
+        background: rgba(240, 114, 63, 1);
+        border-radius: 50%;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 16px;
+      }
+
+      > span:nth-child(2) {
+        font-size: 28px;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #9097A3;
+      }
+
+      > span:nth-child(3) {
+        font-size: 28px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: rgba(43, 45, 48, 1);
+      }
+    }
+
+    > li:last-child {
+      margin-bottom: 0;
     }
   }
 }

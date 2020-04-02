@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="content">
-      <slot name="content"></slot>
+      <slot></slot>
     </div>
     <div class="advice">
       <div class="advice-tit">解读建议</div>
@@ -72,7 +72,7 @@ export default {
   }
 
   .content {
-    margin: 22px 32px 40px 32px;
+    margin: 22px 32px 54px 32px;
   }
 
   .advice {
