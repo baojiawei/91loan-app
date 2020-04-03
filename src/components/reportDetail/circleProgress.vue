@@ -1,6 +1,13 @@
 <template>
   <div class="circleProgress-wrapper">
     <svg style="transform: rotate(-90deg)" :width="width" :height="width" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad3" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0" stop-color="rgb(14,225,221)" />
+          <stop offset="0.5" stop-color="rgb(14,190,225)" />
+          <stop offset="1" stop-color="rgb(14,154,225)" />
+        </linearGradient>
+      </defs>
       <circle :r="(width-radius)/2"
         :cy="width/2"
         :cx="width/2"
@@ -12,7 +19,7 @@
         :r="(width-radius)/2"
         :cy="width/2"
         :cx="width/2"
-        :stroke="barColor"
+        stroke="url(#grad3)"
         :stroke-width="radius"
         :stroke-linecap="isRound ? 'round' : 'square'"
         :stroke-dasharray="(width-radius)*3.14"
