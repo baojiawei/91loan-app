@@ -28,7 +28,15 @@
         <report-wrapper
           :title="reportWrapperTextArr[0].title"
           :advice="reportWrapperTextArr[0].advice"
-        ></report-wrapper>
+        >
+          <circle-progress
+            :width="circleProgressInitData.width"
+            :radius="circleProgressInitData.radius"
+            :count="circleProgressInitData.count"
+            :barColor="circleProgressInitData.barColor"
+            :backgroundColor="circleProgressInitData.backgroundColor"
+          ></circle-progress>
+        </report-wrapper>
         <report-wrapper
           :title="reportWrapperTextArr[1].title"
           :advice="reportWrapperTextArr[1].advice"
@@ -79,7 +87,8 @@
 
 <script type="text/ecmascript-6">
 import navBar from 'components/navBar/navBar'
-import reportWrapper from './components/reportWrapper'
+import reportWrapper from 'components/reportDetail/reportWrapper'
+import circleProgress from 'components/reportDetail/circleProgress'
 
 export default {
   data () {
@@ -105,14 +114,22 @@ export default {
           advice:
             '若主体命中失信黑名单或命中法院执行，需要积极的与法院和借款方进行沟通协商，及时将所需的欠款还清，方可成功借款。'
         }
-      ]
+      ],
+      circleProgressInitData: {
+        width: 80,
+        radius: 10,
+        count: 700,
+        barColor: '#F2AE57',
+        backgroundColor: '#FFE8CC'
+      }
     }
   },
   created () {},
   methods: {},
   components: {
     navBar: navBar,
-    reportWrapper: reportWrapper
+    reportWrapper: reportWrapper,
+    circleProgress: circleProgress
   }
 }
 </script>
