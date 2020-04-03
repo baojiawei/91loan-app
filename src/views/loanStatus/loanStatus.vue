@@ -7,10 +7,10 @@
           <img :src="statusText.imgUrl" alt />
           <div class="status-text">{{statusText.text}}</div>
           <div class="status-tip">{{statusText.tip}}</div>
-          <button>
+          <router-link tag="button" :to="{name: 'creditAnalysis'}">
             <span>查看我的综合信用分</span>
             <img src="~images/loanStatus/right-arrow.png" alt />
-          </button>
+          </router-link>
         </div>
         <div class="loan-comment">
           <loan-comment weight="3"></loan-comment>

@@ -60,8 +60,12 @@
         </div>
       </div>
     </div>
-    <div class="desc1"></div>
-    <div class="desc2"></div>
+    <div class="desc1">
+      <img src="~images/creditAnalysis/bottom-img1.png" alt="">
+    </div>
+    <div class="desc2">
+      <img src="~images/creditAnalysis/bottom-img2.png" alt="">
+    </div>
     <button class="bottom-btn" @click="queryReport">立即查询</button>
     <transition name="slide">
       <router-view></router-view>
@@ -310,6 +314,20 @@ export default {
   .desc1 {
     border-top: 12px solid #F4F6F8;
     border-bottom: 12px solid #F4F6F8;
+    text-align: center;
+    >img {
+      width: 600px;
+      height: 306px;
+      display: inline-block;
+    }
+  }
+
+  .desc2 {
+    >img {
+      width: 600px;
+      height: 306px;
+      display: inline-block;
+    }
   }
 
   >.bottom-btn {
