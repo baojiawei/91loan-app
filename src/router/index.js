@@ -24,6 +24,11 @@ const routes = [
       title: '实名认证'
     }
   },
+  {
+    path: 'externalPage',
+    name: 'externalPage',
+    component: () => import('components/externalPage/externalPage')
+  },
   protocols,
   loanProcess,
   member,
