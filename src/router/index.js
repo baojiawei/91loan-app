@@ -29,6 +29,14 @@ const routes = [
     name: 'externalPage',
     component: () => import('components/externalPage/externalPage')
   },
+  {
+    path: '/loanStatus',
+    name: 'loanStatus',
+    component: () => import('views/loanStatus/loanStatus'),
+    meta: {
+      title: '贷款申请'
+    }
+  },
   protocols,
   loanProcess,
   member,

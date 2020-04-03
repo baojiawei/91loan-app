@@ -144,11 +144,11 @@ export default {
         }
       ],
       circleProgressInitData: {
-        width: 80,
+        width: 90,
         radius: 10,
-        count: 700,
+        count: 600,
         barColor: '#F2AE57',
-        backgroundColor: '#FFE8CC'
+        backgroundColor: 'rgba(152,165,209,0.3)'
       }
     }
   },
@@ -247,22 +247,22 @@ export default {
     padding: 40px 0;
 
     >.line {
-      height: 80px;
-      background: #eeeeee;
+      height: 98px;
+      background: #CCCDCE;
       width: 1px;
     }
 
     >.level {
-      font-size: 28px;
+      font-size: 30px;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
-      color: rgba(102, 102, 102, 1);
+      color:rgba(123,123,123,1);
 
       >div:nth-child(2) {
-        font-size: 40px;
+        font-size: 50px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
-        color: rgba(236, 89, 48, 1);
+        color:rgba(240,114,63,1);
         margin-top: 32px;
       }
     }
