@@ -1,70 +1,89 @@
 <template>
   <div class="creditAnalysis-wrapper">
     <nav-bar :title="title"></nav-bar>
-    <div class="header">
-      <div class="new-flash-warpper">
-        <i class="icon-new-flash"></i>
-        <div class="slide-loan-list">
-          <cube-slide :data="loanCustList" direction="vertical" :showDots="false" :interval="2000">
-            <cube-slide-item v-for="(item, index) in loanCustList" :key="index">
-              <div class="slide-item">
-                <span>{{item.name}}完成检测优化后，借款成功</span>
-                <span class="randTime">{{item.randTime}}分钟前</span>
-              </div>
-            </cube-slide-item>
-          </cube-slide>
+    <div class="creditAnalysis-scroll-wrapper">
+      <cube-scroll>
+        <div class="header">
+          <div class="new-flash-warpper">
+            <i class="icon-new-flash"></i>
+            <div class="slide-loan-list">
+              <cube-slide
+                :data="loanCustList"
+                direction="vertical"
+                :showDots="false"
+                :interval="2000"
+              >
+                <cube-slide-item v-for="(item, index) in loanCustList" :key="index">
+                  <div class="slide-item">
+                    <span>{{item.name}}完成检测优化后，借款成功</span>
+                    <span class="randTime">{{item.randTime}}分钟前</span>
+                  </div>
+                </cube-slide-item>
+              </cube-slide>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="input-wrapper">
-      <div class="validator-item">
-        <cube-input
-          v-model="inputProps[0].text"
-          :placeholder="inputProps[0].placeholder"
-          :type="inputProps[0].type"
-          :maxlength="inputProps[0].maxlength"
-          :clearable="true"
-          @blur="fixIosBug"
-          ref="idCardName"
-        >
-          <template slot="prepend">姓名</template>
-        </cube-input>
-        <cube-input
-          v-model="inputProps[1].text"
-          :placeholder="inputProps[1].placeholder"
-          :type="inputProps[1].type"
-          :maxlength="inputProps[1].maxlength"
-          :clearable="true"
-          @blur="fixIosBug"
-          ref="idCardCode"
-        >
-          <template slot="prepend">身份证</template>
-        </cube-input>
-        <cube-input
-          v-model="inputProps[2].text"
-          :placeholder="inputProps[2].placeholder"
-          :type="inputProps[2].type"
-          :maxlength="inputProps[2].maxlength"
-          :clearable="true"
-          @blur="fixIosBug"
-          ref="telNo"
-        >
-          <template slot="prepend">手机号</template>
-        </cube-input>
-      </div>
-      <div class="choose-protocol">
-        <i class="check" @click="chooseProtocol"></i>
-        <div>
-          我已阅读并同意
-          <router-link tag="span" :to="{ name: 'reportProtocol' }">《服务协议》</router-link>
+        <div class="input-wrapper">
+          <div class="validator-item">
+            <cube-input
+              v-model="inputProps[0].text"
+              :placeholder="inputProps[0].placeholder"
+              :type="inputProps[0].type"
+              :maxlength="inputProps[0].maxlength"
+              :clearable="true"
+              @blur="fixIosBug"
+              ref="idCardName"
+            >
+              <template slot="prepend">姓名</template>
+            </cube-input>
+            <cube-input
+              v-model="inputProps[1].text"
+              :placeholder="inputProps[1].placeholder"
+              :type="inputProps[1].type"
+              :maxlength="inputProps[1].maxlength"
+              :clearable="true"
+              @blur="fixIosBug"
+              ref="idCardCode"
+            >
+              <template slot="prepend">身份证</template>
+            </cube-input>
+            <cube-input
+              v-model="inputProps[2].text"
+              :placeholder="inputProps[2].placeholder"
+              :type="inputProps[2].type"
+              :maxlength="inputProps[2].maxlength"
+              :clearable="true"
+              @blur="fixIosBug"
+              ref="telNo"
+            >
+              <template slot="prepend">手机号</template>
+            </cube-input>
+          </div>
+          <div class="choose-protocol">
+            <i class="check" @click="chooseProtocol"></i>
+            <div>
+              我已阅读并同意
+              <router-link tag="span" :to="{ name: 'reportProtocol' }">《服务协议》</router-link>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="desc1">
-      <img src="~images/creditAnalysis/bottom-img1.png" alt="">
-    </div>
-    <div class="desc2">
-      <img src="~images/creditAnalysis/bottom-img2.png" alt="">
+        <div class="desc1">
+          <div class="title">
+            <span>检测</span>
+            <span>结果展示</span>
+            <div class="line"></div>
+          </div>
+          <img v-lazy="require('@/assets/images/creditAnalysis/bottom-img1.png')" alt />
+        </div>
+        <div class="desc2">
+          <div class="title">
+            <span>检测</span>
+            <span>优势展示</span>
+            <div class="line"></div>
+          </div>
+          <img v-lazy="require('@/assets/images/creditAnalysis/bottom-img2.png')" alt />
+        </div>
+      </cube-scroll>
     </div>
     <button class="bottom-btn" @click="queryReport">立即查询</button>
     <transition name="slide">
@@ -190,143 +209,176 @@ export default {
   bottom: 0;
   background: #fff;
 
-  >.header {
-    width: 100%;
-    height: 316px;
-    background: url('~images/creditAnalysis/bg-banner.png') no-repeat;
-    background-size: cover;
-    position: relative;
+  .creditAnalysis-scroll-wrapper {
+    position: fixed;
+    top: 98px;
+    left: 0;
+    right: 0;
+    bottom: 98px;
 
-    .new-flash-warpper {
-      position: absolute;
-      bottom: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 686px;
-      height: 80px;
-      padding-left: 36px;
-      background: rgba(255, 255, 255, 1);
-      box-shadow: 0px 2px 16px 0px rgba(152, 165, 209, 0.3);
-      border-radius: 42px;
-      box-sizing: border-box;
+    .header {
+      width: 100%;
+      height: 316px;
+      background: url('~images/creditAnalysis/bg-banner.png') no-repeat;
+      background-size: cover;
+      position: relative;
 
-      .icon-new-flash {
-        width: 36px;
-        height: 37px;
-        background-image: url('~images/creditAnalysis/broadcast.png');
-        background-size: 100% 100%;
-        display: inline-block;
-        vertical-align: middle;
-      }
-
-      .slide-loan-list {
-        width: 560px;
-        display: inline-block;
-        vertical-align: middle;
-        font-size: 28px;
-        color: #4a4a4a;
-        margin-left: 18px;
+      .new-flash-warpper {
+        position: absolute;
+        bottom: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 686px;
         height: 80px;
-        line-height: 80px;
+        padding-left: 36px;
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0px 2px 16px 0px rgba(152, 165, 209, 0.3);
+        border-radius: 42px;
+        box-sizing: border-box;
 
-        .slide-item {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+        .icon-new-flash {
+          width: 36px;
+          height: 37px;
+          background-image: url('~images/creditAnalysis/broadcast.png');
+          background-size: 100% 100%;
+          display: inline-block;
+          vertical-align: middle;
         }
 
-        .randTime {
+        .slide-loan-list {
+          width: 560px;
+          display: inline-block;
+          vertical-align: middle;
           font-size: 28px;
-          font-family: PingFangSC-Regular, PingFang SC;
-          font-weight: 400;
-          color: rgba(178, 179, 181, 1);
+          color: #4a4a4a;
+          margin-left: 18px;
+          height: 80px;
+          line-height: 80px;
+
+          .slide-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          .randTime {
+            font-size: 28px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: rgba(178, 179, 181, 1);
+          }
         }
       }
     }
-  }
 
-  >.input-wrapper {
-    margin: 92px 32px 36px 32px;
-    padding: 30px 32px 48px 32px;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 6px 24px 0px rgba(152, 165, 209, 0.3);
-    border-radius: 24px;
-    border: 1px solid rgba(229, 237, 250, 1);
+    .input-wrapper {
+      margin: 92px 32px 36px 32px;
+      padding: 30px 32px 48px 32px;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0px 6px 24px 0px rgba(152, 165, 209, 0.3);
+      border-radius: 24px;
+      border: 1px solid rgba(229, 237, 250, 1);
 
-    .cube-input {
-      height: 93px;
-      line-height: 93px;
-      margin-bottom: 6px;
-    }
-
-    .cube-input::after {
-      border: 1PX solid transparent;
-      border-bottom: 1PX solid #e6e6e6;
-    }
-
-    .cube-input-field {
-      text-align: right;
-      font-size: 32px;
-      padding: 0;
-    }
-
-    .cube-input-prepend {
-      font-size: 32px;
-      font-family: PingFangSC-Medium, PingFang SC;
-      font-weight: 500;
-      color: rgba(43, 45, 48, 1);
-    }
-
-    .choose-protocol {
-      font-family: PingFangSC-Regular;
-      color: #5D5D77;
-      font-size: 0;
-      margin-top: 38px;
-
-      > .check {
-        inline-block-direction();
-        width: 24px;
-        height: 25px;
-        background: url('~images/creditAnalysis/check.png') no-repeat;
-        background-size: cover;
+      .cube-input {
+        height: 93px;
+        line-height: 93px;
+        margin-bottom: 6px;
       }
 
-      > .uncheck {
-        inline-block-direction();
-        width: 24px;
-        height: 25px;
-        background: url('~images/creditAnalysis/uncheck.png') no-repeat;
-        background-size: cover;
+      .cube-input::after {
+        border: 1PX solid transparent;
+        border-bottom: 1PX solid #e6e6e6;
       }
 
-      > div {
-        inline-block-direction();
-        margin-left: 12px;
-        font-size: 24px;
+      .cube-input-field {
+        text-align: right;
+        font-size: 32px;
+        padding: 0;
+      }
 
-        > span {
-          color: rgba(80, 131, 247, 1);
+      .cube-input-prepend {
+        font-size: 32px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: rgba(43, 45, 48, 1);
+      }
+
+      .choose-protocol {
+        font-family: PingFangSC-Regular;
+        color: #5D5D77;
+        font-size: 0;
+        margin-top: 38px;
+
+        > .check {
+          inline-block-direction();
+          width: 24px;
+          height: 25px;
+          background: url('~images/creditAnalysis/check.png') no-repeat;
+          background-size: cover;
+        }
+
+        > .uncheck {
+          inline-block-direction();
+          width: 24px;
+          height: 25px;
+          background: url('~images/creditAnalysis/uncheck.png') no-repeat;
+          background-size: cover;
+        }
+
+        > div {
+          inline-block-direction();
+          margin-left: 12px;
+          font-size: 24px;
+
+          > span {
+            color: rgba(80, 131, 247, 1);
+          }
         }
       }
     }
-  }
 
-  .desc1 {
-    border-top: 12px solid #F4F6F8;
-    border-bottom: 12px solid #F4F6F8;
-    text-align: center;
-    >img {
-      width: 600px;
-      height: 306px;
-      display: inline-block;
+    .desc1, .desc2 {
+      text-align: center;
+      padding: 26px 0 36px;
+
+      >.title {
+        font-size: 36px;
+        font-family: PingFangSC-Semibold, PingFang SC;
+        font-weight: 600;
+        color:rgba(46,46,46,1);
+        text-align: center;
+        margin-bottom: 36px;
+
+        >span:nth-child(2) {
+          color: #5083F7;
+        }
+
+        >.line {
+          width: 48px;
+          height: 8px;
+          background: rgba(243, 243, 246, 1);
+          margin: 16px auto 0;
+        }
+      }
     }
-  }
 
-  .desc2 {
-    >img {
-      width: 600px;
-      height: 306px;
-      display: inline-block;
+    .desc1 {
+      border-top: 12px solid #F4F6F8;
+      border-bottom: 12px solid #F4F6F8;
+
+      >img {
+        width: 600px;
+        height: 306px;
+        display: inline-block;
+      }
+    }
+
+    .desc2 {
+      >img {
+        width: 686px;
+        height: 796px;
+        display: inline-block;
+      }
     }
   }
 
