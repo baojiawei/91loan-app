@@ -3,7 +3,7 @@
     <nav-bar :title="title"></nav-bar>
     <div class="detail-wrapper">
       <cube-scroll>
-        <div class="header">
+        <div class="header animated bounceIn">
           <div class="user-info-wrapper">
             <div class="avatar"></div>
             <div class="info">
@@ -40,7 +40,7 @@
             <div class="line"></div>
             <div class="level">
               <div>你的信用等级为</div>
-              <div>优秀</div>
+              <div class="animated fadeInRight">优秀</div>
             </div>
           </div>
         </report-wrapper>
@@ -49,12 +49,12 @@
           :advice="reportWrapperTextArr[1].advice"
         >
           <div class="blackList-wrapper">
-            <div class="module">
+            <div class="module animated fadeInLeft delay-1s">
               <img src="~images/detail/icon-idCardCode.png" alt />
               <div>身份证</div>
               <div>未上黑名单</div>
             </div>
-            <div class="module">
+            <div class="module animated fadeInRight delay-1s">
               <img src="~images/detail/icon-telNo.png" alt />
               <div>手机号</div>
               <div class="active">命中黑名单</div>
@@ -105,7 +105,7 @@
         </div>
         <div class="fill"></div>
       </cube-scroll>
-      <button class="bottom-btn" @click="queryReport">立即查询</button>
+      <button class="bottom-btn animated slideInUp delay-2s" @click="queryReport">立即查询</button>
     </div>
   </div>
 </template>
