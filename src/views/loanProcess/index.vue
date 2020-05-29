@@ -54,7 +54,7 @@
           </div>
           <div class="submit" @click="_submitLoanApplication">提交</div>
         </div>
-        <div class="bottom" v-if=isRelease>
+        <div class="bottom" v-if="isRelease">
           <div class="tit">同时申请下列产品，贷款通过率将提升至95%</div>
           <div class="report-loan-list">
             <ul>
