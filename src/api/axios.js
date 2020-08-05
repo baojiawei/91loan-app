@@ -18,8 +18,8 @@ axios.interceptors.request.use(config => {
   config.method === 'post'
     ? config.data = qs.stringify({ ...config.data })
     : config.params = { ...config.params }
-  const account = 'ay-webapp'
-  const secret = 'c6c7d53fd4dc4d21bd8ce79bd55bb390'
+  const account = 'xxxxxx'
+  const secret = 'xxxxxx'
   const timestamp = new Date().getTime()
   const sign = md5(account + timestamp + secret).toUpperCase()
   let token = ''
